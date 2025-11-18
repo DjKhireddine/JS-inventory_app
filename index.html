@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventaire Personnel - Gestion des Affaires</title>
+    
+    <!-- Material Design Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
+    <!-- Material Design Fonts -->
+    <link href="https://fonts.googleapis.com/css2?famescapeHtmlily=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header avec navigation -->
+    <header class="app-header">
+        <div class="header-content">
+            <div class="header-title">
+                <span class="material-symbols-outlined">inventory_2</span>
+                <h1>Inventaire Personnel</h1>
+            </div>
+            <nav class="header-nav">
+                <button class="nav-btn active" data-view="inventory">
+                    <span class="material-symbols-outlined">view_list</span>
+                    <span>Inventaire</span>
+                </button>
+                <button class="nav-btn" data-view="manage">
+                    <span class="material-symbols-outlined">settings</span>
+                    <span>Gestion</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Contenu principal -->
+    <main class="main-content">
+        <!-- Vue Inventaire -->
+        <section id="inventory-view" class="view active">
+            <!-- Barre de recherche -->
+            <div class="search-container">
+                <div class="search-field">
+                    <span class="material-symbols-outlined">search</span>
+                    <input type="text" id="search-input" placeholder="Rechercher un objet...">
+                    <button class="clear-search" id="clear-search">
+                        <span class="material-symbols-outlined">clear</span>
+                    </button>
+                </div>
+                <div class="filter-chips">
+                    <div class="chip active" data-category="all">
+                        <span>Toutes les catégories</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Liste des objets par catégorie -->
+            <div class="inventory-content">
+                <div class="category-section" data-category="all">
+                    <div class="category-header">
+                        <h2>Tous les objets</h2>
+                        <span class="item-count">0 objets</span>
+                    </div>
+                    <div class="items-grid" id="items-container">
+                        <!-- Les objets seront ajoutés dynamiquement ici -->
+                        <div class="empty-state">
+                            <span class="material-symbols-outlined">inventory</span>
+                            <h3>Aucun objet trouvé</h3>
+                            <p>Commencez par ajouter des catégories et des objets dans la section Gestion</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Vue Gestion -->
+        <section id="manage-view" class="view">
+            <div class="manage-container">
+                <!-- Gestion des catégories -->
+                <div class="manage-section">
+                    <div class="section-header">
+                        <h2>
+                            <span class="material-symbols-outlined">category</span>
+                            Gestion des Catégories
+                        </h2>
+                        <button class="fab-small" id="add-category-btn">
+                            <span class="material-symbols-outlined">add</span>
+                        </button>
+                    </div>
+                    
+                    <div class="categories-list" id="categories-list">
+                        <!-- Les catégories seront ajoutées dynamiquement ici -->
+                        <div class="empty-state">
+                            <span class="material-symbols-outlined">category</span>
+                            <p>Aucune catégorie créée</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gestion des objets -->
+                <div class="manage-section">
+                    <div class="section-header">
+                        <h2>
+                            <span class="material-symbols-outlined">add_box</span>
+                            Ajouter un Objet
+                        </h2>
+                    </div>
+                    
+                    <form class="add-item-form" id="add-item-form">
+                        <div class="form-field">
+                            <label for="item-name">Nom de l'objet</label>
+                            <input type="text" id="item-name" required>
+                        </div>
+                        
+                        <div class="form-field">
+                            <label for="item-description">Description (optionnelle)</label>
+                            <textarea id="item-description" rows="3"></textarea>
+                        </div>
+                        
+                        <div class="form-field">
+                            <label for="item-category">Catégorie</label>
+                            <select id="item-category" required>
+                                <option value="">Sélectionner une catégorie</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-field">
+                            <label for="item-location">Emplacement</label>
+                            <input type="text" id="item-location" placeholder="Ex: Salon, Chambre, Garage...">
+                        </div>
+                        
+                        <div class="form-field">
+                            <label for="item-quantity">Quantité</label>
+                            <input type="number" id="item-quantity" min="1" value="1">
+                        </div>
+                        
+                        <button type="submit" class="btn-primary">
+                            <span class="material-symbols-outlined">add</span>
+                            Ajouter l'objet
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FAB pour ajouter rapidement un objet -->
+    <!--<button class="fab" id="quick-add-fab">
+        <span class="material-symbols-outlined">add</span>
+    </button>-->
+
+    <!-- Modales -->
+    <!-- Modale d'ajout/édition de catégorie -->
+    <div class="modal-overlay" id="category-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="category-modal-title">Nouvelle Catégorie</h3>
+                <button class="modal-close" id="category-modal-close">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="modal-content">
+                <form id="category-form">
+                    <div class="form-field">
+                        <label for="category-name">Nom de la catégorie</label>
+                        <input type="text" id="category-name" required>
+                    </div>
+
+                    <div class="form-field">
+                        <label>Couleur</label>
+                        <div class="color-palette" id="color-palette"></div>
+                        <input type="hidden" id="category-color" value="#3F51B5">
+                    </div>
+
+                    <div class="form-field">
+                        <label>Icône</label>
+                        <div class="icon-select" id="icon-select"></div>
+                        <input type="hidden" id="category-icon" value="category">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn-secondary" id="category-cancel">Annuler</button>
+                <button type="submit" form="category-form" class="btn-primary" id="category-save">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modale d'édition d'objet -->
+    <div class="modal-overlay" id="item-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="item-modal-title">Modifier l'objet</h3>
+                <button class="modal-close" id="item-modal-close">
+                    <span class="material-symbols-outlined">close</span>
+                </button>
+            </div>
+            <div class="modal-content">
+                <form id="item-edit-form">
+                    <div class="form-field">
+                        <label for="edit-item-name">Nom de l'objet</label>
+                        <input type="text" id="edit-item-name" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="edit-item-description">Description</label>
+                        <textarea id="edit-item-description" rows="3"></textarea>
+                    </div>
+                    <div class="form-field">
+                        <label for="edit-item-category">Catégorie</label>
+                        <select id="edit-item-category" required>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label for="edit-item-location">Emplacement</label>
+                        <input type="text" id="edit-item-location">
+                    </div>
+                    <div class="form-field">
+                        <label for="edit-item-quantity">Quantité</label>
+                        <input type="number" id="edit-item-quantity" min="1">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn-danger" id="item-delete">
+                    <span class="material-symbols-outlined">delete</span>
+                    Supprimer
+                </button>
+                <button type="button" class="btn-secondary" id="item-cancel">Annuler</button>
+                <button type="submit" form="item-edit-form" class="btn-primary" id="item-save">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast pour les notifications -->
+    <div class="toast" id="toast">
+        <span class="toast-message"></span>
+        <button class="toast-close">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
