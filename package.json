@@ -1,0 +1,30 @@
+{
+  "name": "inventory_app",
+  "version": "1.0.0",
+  "description": "inventory app with electron",
+  "keywords": [
+    "inventory",
+    "app",
+    "javascript",
+    "electron"
+  ],
+  "homepage": "https://github.com/DjKhireddine/JS-inventory_app#readme",
+  "bugs": {
+    "url": "https://github.com/DjKhireddine/JS-inventory_app/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DjKhireddine/JS-inventory_app.git"
+  },
+  "license": "ISC",
+  "author": "Djamel KHIREDDINE",
+  "type": "commonjs",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "electron": "^39.2.1"
+  }
+}
